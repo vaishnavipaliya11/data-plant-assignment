@@ -12,7 +12,8 @@ export interface scheduleDataTableTypes {
   subject: string | number;
   frequency: string;
   timing: string;
-  repeat?:object
+  repeat?: object;
+  id?: string | number;
 }
 export interface FormInputTypes {
   title: string;
@@ -20,8 +21,10 @@ export interface FormInputTypes {
   timing: string;
   subject: string;
   repeat: Record<string, any>;
+  description: string;
+  id: string;
 }
 export interface EditSchedulePayload {
   id: string;
-  payload: scheduleDataTableTypes
+  payload: FormInputTypes;
 }

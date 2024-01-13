@@ -4,17 +4,23 @@ import { getData } from "./helpers/getData";
 interface scheduleInitialStateTypes {
   data: [];
   dataLoading: boolean;
+  isPopOverOpen: boolean;
 }
 
 const initialState: scheduleInitialStateTypes = {
   data: [],
   dataLoading: false,
+  isPopOverOpen: false,
 };
 
 export const scheduleSlice = createSlice({
   name: "schedule",
   initialState,
-  reducers: {},
+  reducers: {
+    setPopOver: (state) => {
+      state.isPopOverOpen = !state.isPopOverOpen;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(getData.pending, (state) => {
@@ -30,7 +36,6 @@ export const scheduleSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
-export const {} = scheduleSlice.actions;
+export const { setPopOver } = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

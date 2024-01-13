@@ -3,10 +3,10 @@ import axios from "axios";
 
 export const deleteSchedule = createAsyncThunk(
   "schedule/delete",
-  async (id: string) => {
+  async (id: string|number | undefined) => {
     try {
       const response = await axios.delete(
-        `https://621d070d806a09850a500b05.mockapi.io/api/wishlist/${id}`
+        `https://65a02d427310aa1f8144bb38.mockapi.io/api/v1/all/${id}`
       );
       console.log(response, "response");
       if (response.status === 200) {

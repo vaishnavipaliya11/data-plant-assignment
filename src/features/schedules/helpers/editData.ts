@@ -3,8 +3,8 @@ import axios from "axios";
 import { EditSchedulePayload } from "../../../types";
 
 export const editSchedule = createAsyncThunk(
-  "cart/edit-cartQty",
-  async ({ id, payload }:EditSchedulePayload) => {
+  "schedule/edit",
+  async ({ id, payload }: EditSchedulePayload) => {
     console.log(payload, "editSchedule");
     const url = `https://65a02d427310aa1f8144bb38.mockapi.io/api/v1/all/${id}`;
     try {
@@ -14,9 +14,7 @@ export const editSchedule = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        data: {
-          payload,
-        },
+        data: payload,
       });
 
       if (response.status === 200) {

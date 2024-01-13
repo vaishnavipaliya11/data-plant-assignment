@@ -9,7 +9,7 @@ import { Navbar } from "../components/navbar/Navbar";
 
 export const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { data, dataLoading } = useAppSelector((store) => store.schedule);
+  const { data } = useAppSelector((store) => store.schedule);
   useEffect(() => {
     dispatch(getData());
   }, []);
