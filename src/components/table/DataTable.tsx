@@ -1,26 +1,36 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
+import { Button, Popover, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { DataTableTypes } from "../../types";
+import { DataTableTypes, scheduleDataTableTypes } from "../../types";
 import { DeleteOutlined } from "@ant-design/icons";
 import { EditOutlined } from "@ant-design/icons";
+import { ModalForm } from "../ModalForm/ModalForm";
 
-const columns: ColumnsType<DataTableTypes> = [
+const columns: ColumnsType<scheduleDataTableTypes> = [
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
+    dataIndex: "title",
+    key: "title",
+    // render: (text) => <a>{text}</a>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "Description",
+    dataIndex: "description",
     key: "age",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Subject",
+    dataIndex: "subject",
     key: "address",
+  },
+  {
+    title: "Schedule",
+    dataIndex: "frequency",
+    key: "address",
+    render: (text, { timing }) => {
+      console.log(`${text} ${timing}`, "text");
+      return <p>{`${text} at ${timing}`}</p>;
+    },
   },
 
   {
@@ -28,11 +38,20 @@ const columns: ColumnsType<DataTableTypes> = [
     key: "action",
     render: (_, record) => (
       <Space size="middle">
+        <>
+          <Popover
+            content={<ModalForm />}
+            title="Title"
+            trigger="click"
+            placement="bottomRight"
+          >
+            <span>
+              <EditOutlined />
+            </span>
+          </Popover>
+        </>
         <span>
-          <DeleteOutlined />
-        </span>
-        <span>
-          <EditOutlined />
+          <DeleteOutlined />{" "}
         </span>
       </Space>
     ),
@@ -62,6 +81,10 @@ const data: DataTableTypes[] = [
     tags: ["cool", "teacher"],
   },
 ];
-export const DataTable = () => {
-  return <Table columns={columns} dataSource={data} />;
+export const DataTable = ({
+  tableData,
+}: {
+  tableData: scheduleDataTableTypes[];
+}) => {
+  return <Table columns={columns} dataSource={tableData} />;
 };
