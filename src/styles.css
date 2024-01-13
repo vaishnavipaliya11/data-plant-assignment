@@ -5,7 +5,7 @@
 }
 .sidebar-container {
   background-color: var(--primary-clr);
-  height: 100vh;
+  min-height: 100vh;
 }
 .main-container {
   display: grid;
@@ -15,9 +15,10 @@
 }
 .add-btn-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: flex-end;
   margin: 0.5rem;
+  padding: 1rem 0;
 }
 .primary-btn {
   background-color: var(--primary-clr);

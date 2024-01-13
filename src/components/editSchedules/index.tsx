@@ -19,7 +19,7 @@ export const EditSchedule = ({ record }: { record: FormInputTypes }) => {
       open={isPopOverOpen}
       placement="bottomRight"
     >
-      <span onClick={()=> setIsPopOver(true)}>
+      <span style={{cursor:"pointer"}} onClick={()=> setIsPopOver(true)}>
         <EditOutlined  />
       </span>
     </Popover>

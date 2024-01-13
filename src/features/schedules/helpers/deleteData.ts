@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export const deleteSchedule = createAsyncThunk(
   "schedule/delete",
@@ -10,8 +11,11 @@ export const deleteSchedule = createAsyncThunk(
       );
       console.log(response, "response");
       if (response.status === 200) {
+        toast.success("Deleted schedule");
         return response.data;
       } else {
+        toast.error("Unable to Delete schedule.");
+
         console.error(
           "Failed to retrieve orders. Status Code: ",
           response.status
@@ -19,6 +23,7 @@ export const deleteSchedule = createAsyncThunk(
         return null;
       }
     } catch (error) {
+      toast.error("Unable to Delete schedule.");
       console.error("Error while fetching orders: ", error);
       return null;
     }

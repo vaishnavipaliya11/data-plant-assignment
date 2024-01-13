@@ -2,13 +2,17 @@ import { Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { FormInputTypes } from "../../types";
 import { DeleteOutlined } from "@ant-design/icons";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { deleteSchedule } from "../../features/schedules/helpers/deleteData";
 import dayjs from "dayjs";
 import { EditSchedule } from "../editSchedules";
 
 export const DataTable = ({ tableData }: { tableData: FormInputTypes[] }) => {
   const dispatch = useAppDispatch();
+  const { searchQuery, dataLoading } = useAppSelector(store => store.schedule);
+
+  const searchedData = tableData.filter(data => data.title.toLowerCase().includes(searchQuery.toLowerCase()));
+
   const columns: ColumnsType<FormInputTypes> = [
     {
       title: "Name",
@@ -47,6 +51,7 @@ export const DataTable = ({ tableData }: { tableData: FormInputTypes[] }) => {
               <EditSchedule record={record} />
             </>
             <span
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 dispatch(deleteSchedule(record?.id));
                 // console.log(id, "record");
@@ -59,5 +64,5 @@ export const DataTable = ({ tableData }: { tableData: FormInputTypes[] }) => {
       },
     },
   ];
-  return <Table columns={columns} dataSource={tableData} pagination={false} />;
+  return <Table loading={dataLoading} columns={columns} dataSource={searchedData}  />;
 };

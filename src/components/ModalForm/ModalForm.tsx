@@ -1,14 +1,6 @@
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  TimePicker,
-} from "antd";
+import { Button, Checkbox, Form, Input, Select, Space, TimePicker } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { postData } from "../../features/schedules/helpers/postData";
 import { FormInputTypes } from "../../types";
@@ -24,17 +16,9 @@ const defaultFormValue = {
   description: "",
   id: "",
 };
-export const ModalForm = ({
-  formData,
-  hide,
-}: {
-  formData?: FormInputTypes;
-  hide?: () => void;
-}) => {
+export const ModalForm = ({ formData, hide }: { formData?: FormInputTypes; hide?: () => void }) => {
   const { Option } = Select;
   const dispatch = useAppDispatch();
-
-  console.log(formData, "formData");
 
   const [formInput, setFormInput] = useState<FormInputTypes>(
     formData ? formData : defaultFormValue
@@ -46,26 +30,26 @@ export const ModalForm = ({
   const handleFrequencyChange = (value: any) => {
     console.log(value, "handleFrequencyChange");
     setMonthlyRepeat("");
-    setFormInput((prevData) => ({ ...prevData, repeat: {} }));
-    setFormInput((prevData) => ({ ...prevData, frequency: value }));
+    setFormInput(prevData => ({ ...prevData, repeat: {} }));
+    setFormInput(prevData => ({ ...prevData, frequency: value }));
   };
 
   const handleTimeChange = (value: any) => {
     const timeValue = dayjs(value).format("YYYY/MM/DD hh:mm a");
-    setFormInput((prevData) => ({ ...prevData, timing: timeValue }));
+    setFormInput(prevData => ({ ...prevData, timing: timeValue }));
   };
 
   const handelFormInput = (e: any) => {
     const { name, value } = e.target;
     console.log(e.target.name, "e.target.name");
 
-    setFormInput((prevData) => ({ ...prevData, [name]: value }));
+    setFormInput(prevData => ({ ...prevData, [name]: value }));
   };
 
   const repeatHandler = (e: any) => {
     console.log(e, "repeatHandler");
     let selectedDay = e;
-    setFormInput((prevData) => ({
+    setFormInput(prevData => ({
       ...prevData,
       repeat: {
         ...prevData.repeat,
@@ -77,17 +61,8 @@ export const ModalForm = ({
   const monthlyRepeatHandler = (e: any) => {
     console.log(e, "monthlyRepeatHandler");
 
-    const selectedDay = e;
     setMonthlyRepeat(e);
-    // setFormInput((prevData) => ({
-    //   ...prevData,
-    //   repeat: {
-    //     ...prevData.repeat,
-    //     [selectedDay]: prevData.repeat[selectedDay] ? false : true,
-    //   },
-    // }));
   };
-  console.log(monthlyRepeat, "monthlyRepeat");
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
   const Repeat = () => {
@@ -95,7 +70,7 @@ export const ModalForm = ({
       case "Weekly":
         return (
           <Checkbox.Group name="repeat">
-            {weekDays.map((day) => (
+            {weekDays.map(day => (
               <div
                 className="repeat-input"
                 onClick={() => repeatHandler(day)}
@@ -114,7 +89,7 @@ export const ModalForm = ({
         return (
           <Select
             value={monthlyRepeat}
-            onChange={(e) => monthlyRepeatHandler(e)}
+            onChange={e => monthlyRepeatHandler(e)}
             options={[
               { value: "firstMonday", label: "First Monday" },
               { value: "lastFriday", label: "Last Friday" },
@@ -127,8 +102,6 @@ export const ModalForm = ({
     }
   };
 
-  console.log(formInput, "formInput");
-  console.log(dayjs(formInput.timing), "dayjs(formInput.timing)");
   const submitHandler = () => {
     if (formInput.frequency === "Monthly") {
       const payload = { ...formInput, repeat: { [monthlyRepeat]: true } };
@@ -140,6 +113,7 @@ export const ModalForm = ({
     if (hide) {
       hide();
     }
+    
   };
 
   const editHandler = () => {
@@ -147,7 +121,7 @@ export const ModalForm = ({
       const payload = { ...formInput, repeat: { [monthlyRepeat]: true } };
       dispatch(editSchedule({ id: formData?.id as string, payload }));
     } else {
-      dispatch(postData(formInput));
+      dispatch(editSchedule({ id: formData?.id as string, payload: formInput }));
     }
     if (hide) {
       hide();
@@ -167,7 +141,7 @@ export const ModalForm = ({
           placeholder="Enter Title"
           name="title"
           value={formInput.title}
-          onChange={(e) => handelFormInput(e)}
+          onChange={e => handelFormInput(e)}
         />
       </Form.Item>
       <Form.Item label="Description">
@@ -175,7 +149,7 @@ export const ModalForm = ({
           placeholder="Enter Description"
           name="description"
           value={formInput.description}
-          onChange={(e) => handelFormInput(e)}
+          onChange={e => handelFormInput(e)}
         />
       </Form.Item>
       <Form.Item label="Subject">
@@ -183,7 +157,7 @@ export const ModalForm = ({
           placeholder="Enter Subject"
           name="subject"
           value={formInput.subject}
-          onChange={(e) => handelFormInput(e)}
+          onChange={e => handelFormInput(e)}
         />
       </Form.Item>
       <Form.Item label="Frequency" name="frequency">
@@ -215,7 +189,7 @@ export const ModalForm = ({
             use12Hours={true}
             showNow={false}
             allowClear={false}
-            onChange={(value) => handleTimeChange(value)}
+            onChange={value => handleTimeChange(value)}
           />
         </Space>
       </Form.Item>
@@ -234,10 +208,7 @@ export const ModalForm = ({
                 : false
             }
             onClick={() => {
-              formData
-                ? // ? console.log({ id: formData?.id, payload: formInput }, "ID")
-                  editHandler()
-                : submitHandler();
+              formData ? editHandler() : submitHandler();
             }}
           >
             {formData ? "Save" : "Submit"}

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { EditSchedulePayload } from "../../../types";
+import { toast } from "react-hot-toast";
 
 export const editSchedule = createAsyncThunk(
   "schedule/edit",
@@ -18,8 +19,12 @@ export const editSchedule = createAsyncThunk(
       });
 
       if (response.status === 200) {
+        toast.success("Schedule edited");
         return response.data;
+
       } else {
+        toast.error("Unable to save schedule");
+
         console.error(
           "Failed to update cart item. Status Code: ",
           response.status
@@ -27,6 +32,7 @@ export const editSchedule = createAsyncThunk(
         return null;
       }
     } catch (error) {
+      toast.error("Unable to save schedule");
       console.error("Error while updating cart item: ", error);
       return null;
     }
